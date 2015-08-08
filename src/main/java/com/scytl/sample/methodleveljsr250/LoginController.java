@@ -88,7 +88,6 @@ public class LoginController {
     // for 403 access denied page
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public ModelAndView accesssDenied() {
-
         ModelAndView model = new ModelAndView();
 
         //check if user is login
@@ -100,7 +99,6 @@ public class LoginController {
 
         model.setViewName("403");
         return model;
-
     }
 
 }

@@ -26,7 +26,7 @@
             <!-- For logout user -->
             <c:url value="/j_spring_security_logout" var="logoutUrl" />
 
-            <!-- csrt for log out-->
+            <!-- csrf for log out-->
             <form id='logoutForm' action='${logoutUrl}' method='POST'>
                 <input type="hidden" 
                        name="${_csrf.parameterName}"
@@ -43,7 +43,7 @@
                 <br/>
                 <br/>
                 <br/>
-                <a href="<c:url value="/common"/>">Regular User Page</a>
+                <a href="<c:url value="/common"/>">Commom Page</a>
 
                 <br/>
                 <br/>

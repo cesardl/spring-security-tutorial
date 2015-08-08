@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author cesardiaz
  */
+@Deprecated
 public class DbUtil {
 
     private static final Logger log = LoggerFactory.getLogger(DbUtil.class);
