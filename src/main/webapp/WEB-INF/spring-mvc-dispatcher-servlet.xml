@@ -18,8 +18,8 @@
     
     <security:global-method-security secured-annotations="enabled" />
     -->
-    <!-- Using JSR 250 -->
-    <context:component-scan base-package="com.scytl.sample.methodleveljsr250" />
+    <!-- Using JSR 250: methodleveljsr250 -->
+    <context:component-scan base-package="com.scytl.sample.web.*, com.scytl.sample.dao, com.scytl.sample.service" />
     
     <security:global-method-security jsr250-annotations="enabled"/>
     
