@@ -34,13 +34,13 @@ public class CustomUserDetailsService extends JdbcDaoImpl {
     }
 
     @Override
-    @Value("select * from users where username = ?")
+    @Value("select * from USERS where username=?")
     public void setUsersByUsernameQuery(String usersByUsernameQueryString) {
         super.setUsersByUsernameQuery(usersByUsernameQueryString);
     }
 
     @Override
-    @Value("select username, role from user_roles where username =?")
+    @Value("select u1.USERNAME, u2.role from USERS u1, USER_AUTHORIZATION u2 where u1.user_id = u2.user_id and u1.USERNAME =?")
     public void setAuthoritiesByUsernameQuery(String queryString) {
         super.setAuthoritiesByUsernameQuery(queryString);
     }
@@ -52,8 +52,8 @@ public class CustomUserDetailsService extends JdbcDaoImpl {
                 new RowMapper<UserDetails>() {
                     @Override
                     public UserDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        String username = rs.getString("username");
-                        String password = rs.getString("password");
+                        String username = rs.getString("USERNAME");
+                        String password = rs.getString("PASSWORD");
                         boolean enabled = rs.getBoolean("enabled");
                         boolean accountNonExpired = rs.getBoolean("accountNonExpired");
                         boolean credentialsNonExpired = rs.getBoolean("credentialsNonExpired");

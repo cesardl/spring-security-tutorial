@@ -49,16 +49,28 @@
    </authentication-manager>
     -->
     <!-- For Database authentication -->
-    <!-- Select users and user_roles from database -->
+    <!-- Select users and user_roles from database
+   <authentication-manager>
+       <authentication-provider>
+           <jdbc-user-service
+               data-source-ref="dataSource"
+               users-by-username-query=
+                   "select username, password, enabled from USER_AUTHENTICATION where username=?"
+               authorities-by-username-query=
+                   "select u1.username, u2.role from USER_AUTHENTICATION u1, USER_AUTHORIZATION u2 where u1.user_id = u2.user_id and u1.username =?" />
+       </authentication-provider>
+   </authentication-manager>
+    -->
+    <beans:bean id="authenticationProvider"
+                    class="com.scytl.sample.web.handler.LimitLoginAuthenticationProvider">
+        <!--
+        <beans:property name="userDetailsService" ref="customUserDetailsService" />
+        <beans:property name="userDetailsDao" ref="userDetailsDao" />
+        -->
+    </beans:bean>
+
     <authentication-manager>
-        <authentication-provider>
-            <jdbc-user-service
-                data-source-ref="dataSource"
-                users-by-username-query=
-                    "select username, password, enabled from USER_AUTHENTICATION where username=?"
-                authorities-by-username-query=
-                    "select u1.username, u2.role from USER_AUTHENTICATION u1, USER_AUTHORIZATION u2 where u1.user_id = u2.user_id and u1.username =?" />
-        </authentication-provider>
+        <authentication-provider ref="authenticationProvider" />
     </authentication-manager>
     
 </beans:beans>
