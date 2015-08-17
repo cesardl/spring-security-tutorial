@@ -38,3 +38,13 @@ CREATE TABLE USER_ATTEMPTS (
     lastModified TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
+
+DROP TABLE PERSISTENT_LOGINS IF EXISTS;
+
+CREATE TABLE PERSISTENT_LOGINS (
+    username  varchar(64) NOT NULL,
+    series    varchar(64) NOT NULL,
+    token     varchar(64) NOT NULL,
+    last_used TIMESTAMP NOT NULL,
+    PRIMARY KEY (series)
+);
