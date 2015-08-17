@@ -15,4 +15,5 @@ public interface UserDetailsDao {
 
     UserAttempts getUserAttempts(String username);
 
+    void printAllUserAttempts(String username);
 }

@@ -44,6 +44,8 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
             //invalid login, update to user_attempts
             userDetailsDao.updateFailAttempts(authentication.getName());
 
+            userDetailsDao.printAllUserAttempts(authentication.getName());
+
             throw e;
         } catch (LockedException e) {
             //this user is locked!
@@ -58,6 +60,8 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
             } else {
                 error = e.getMessage();
             }
+
+            userDetailsDao.printAllUserAttempts(authentication.getName());
 
             throw new LockedException(error);
         }

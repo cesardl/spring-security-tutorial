@@ -3,6 +3,7 @@ package com.scytl.sample.dao;
 import com.scytl.sample.model.UserAttempts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.authentication.LockedException;
@@ -13,6 +14,8 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cesardiaz on 07/08/15.
@@ -105,4 +108,17 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
         return result;
     }
 
+    @Override
+    public void printAllUserAttempts(String username) {
+        String sql = "SELECT * FROM USER_ATTEMPTS";
+
+        List<UserAttempts> userAttemptses  = getJdbcTemplate().query(sql,
+                new BeanPropertyRowMapper(UserAttempts.class));
+
+        System.out.println("ID\t|Username\t|Attempts\t|Last modified");
+        for(UserAttempts userAttempts : userAttemptses) {
+            System.out.println(String.format("%d\t|%s\t\t|%d\t\t\t|%s", userAttempts.getId(), userAttempts.getUsername(),
+                    userAttempts.getAttempts(), userAttempts.getLastModified()));
+        }
+    }
 }
