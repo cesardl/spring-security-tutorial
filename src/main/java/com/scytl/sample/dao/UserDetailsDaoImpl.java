@@ -114,11 +114,13 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
         List<UserAttempts> userAttemptses = getJdbcTemplate().query(sql,
                 new BeanPropertyRowMapper(UserAttempts.class));
 
-        System.out.println("ID\t|Username\t|Attempts\t|Last modified");
-        for (UserAttempts userAttempts : userAttemptses) {
-            System.out.println(String.format("%d\t|%s\t\t|%d\t\t\t|%s",
-                    userAttempts.getId(), userAttempts.getUsername(),
-                    userAttempts.getAttempts(), userAttempts.getLastModified()));
+        if (!userAttemptses.isEmpty()) {
+            System.out.println("ID\t|Username\t|Attempts\t|Last modified");
+            for (UserAttempts userAttempts : userAttemptses) {
+                System.out.println(String.format("%d\t|%s\t\t|%d\t\t\t|%s",
+                        userAttempts.getId(), userAttempts.getUsername(),
+                        userAttempts.getAttempts(), userAttempts.getLastModified()));
+            }
         }
     }
 }

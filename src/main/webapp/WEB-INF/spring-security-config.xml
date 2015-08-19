@@ -18,16 +18,21 @@
     <!-- For custom login page configuration -->
     <!-- enable use-expressions -->
     <http auto-config="true" use-expressions="true">
+        <headers>
+            <cache-control />
+        </headers>
+
         <!-- Without expresions
         <intercept-url pattern="/main" access="ROLE_ADMIN,ROLE_REGULAR_USER" />
         -->
-
         <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
+        <!--
         <intercept-url pattern="/main" access="permitAll" />
-        
+        -->
         <!-- access denied page -->
+        <!--
         <access-denied-handler error-page="/403" />
-        
+        -->
         <form-login login-page="/login"
                     default-target-url="/main"
                     authentication-failure-url="/login?error"
@@ -36,7 +41,7 @@
                     login-processing-url="/auth/login_check"
                     authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />
 
-        <logout logout-success-url="/logout" />
+        <logout logout-success-url="/logout" delete-cookies="JSESSIONID" />
         
         <!-- enable csrf protection -->
         <csrf />
@@ -71,12 +76,23 @@
        </authentication-provider>
    </authentication-manager>
     -->
+    <beans:bean id="customUserDetailsService"
+                class="com.scytl.sample.service.CustomUserDetailsService">
+        <beans:property name="usersByUsernameQuery" 
+                        value="select * from USERS where username=?"/>
+        <beans:property name="authoritiesByUsernameQuery" 
+                        value="select u1.USERNAME, u2.role from USERS u1, USER_AUTHORIZATION u2 where u1.user_id = u2.user_id and u1.USERNAME =?" />
+        <beans:property name="dataSource" ref="dataSource" />
+    </beans:bean>
+ 	
+    <beans:bean id="userDetailsDao" class="com.scytl.sample.dao.UserDetailsDaoImpl" >
+        <beans:property name="dataSource" ref="dataSource" />
+    </beans:bean>
+
     <beans:bean id="authenticationProvider"
                 class="com.scytl.sample.web.handler.LimitLoginAuthenticationProvider">
-        <!--
         <beans:property name="userDetailsService" ref="customUserDetailsService" />
         <beans:property name="userDetailsDao" ref="userDetailsDao" />
-        -->
     </beans:bean>
 
     <authentication-manager>

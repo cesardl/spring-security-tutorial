@@ -30,24 +30,16 @@ public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model, Principal principal) {
+    @RequestMapping(value = "/main**", method = RequestMethod.GET)
+    public String main(ModelMap model, Principal principal) {
         String name = principal.getName();
 
-        log.info("printWelcome: name {}", name);
+        log.info("main: name {}", name);
 
         model.addAttribute("title", "Spring Security Hello World");
         model.addAttribute("message", "This is welcome page!");
 
         return "main_page";
-    }
-
-    @RolesAllowed("ROLE_ADMIN")
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(ModelMap model) {
-        log.info("admin: ModelMap {}", model.keySet());
-
-        return "admin_page";
     }
 
     /**
@@ -58,8 +50,7 @@ public class LoginController {
      * @param request
      * @return
      */
-    @RolesAllowed("ROLE_ADMIN")
-    @RequestMapping(value = "/admin/update**", method = RequestMethod.GET)
+    @RequestMapping(value = "/main/update**", method = RequestMethod.GET)
     public ModelAndView updatePage(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
 
@@ -75,6 +66,14 @@ public class LoginController {
         log.info("updatePage: {}", model);
 
         return model;
+    }
+
+    @RolesAllowed("ROLE_ADMIN")
+    @RequestMapping(value = "/admin**", method = RequestMethod.GET)
+    public String admin(ModelMap model) {
+        log.info("admin: ModelMap {}", model.keySet());
+
+        return "admin_page";
     }
 
     /**
@@ -97,7 +96,7 @@ public class LoginController {
     private void setRememberMeTargetUrlToSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.setAttribute("targetUrl", "/admin/update");
+            session.setAttribute("targetUrl", "/main/update");
         }
     }
 
@@ -123,7 +122,7 @@ public class LoginController {
             //login form for update page
             //if login error, get the targetUrl from session again.
             String targetUrl = getRememberMeTargetUrlFromSession(request);
-            log.info("Targer url: {}", targetUrl);
+
             if (StringUtils.hasText(targetUrl)) {
                 model.addObject("targetUrl", targetUrl);
                 model.addObject("loginUpdate", true);
@@ -146,6 +145,9 @@ public class LoginController {
         if (session != null) {
             targetUrl = session.getAttribute("targetUrl") == null ? ""
                     : session.getAttribute("targetUrl").toString();
+            log.info("Targer url: {}", targetUrl);
+        } else {
+            log.info("Session null");
         }
         return targetUrl;
     }

@@ -6,16 +6,6 @@
 
     <display-name>Spring Security Tutorial</display-name>
 
-    <!-- Loads Spring Security config file -->
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-            /WEB-INF/spring-mvc-dispatcher-servlet.xml,
-            /WEB-INF/spring-security-config.xml,
-            /WEB-INF/spring-database-config.xml
-        </param-value>
-    </context-param> 
-
     <!-- Spring MVC -->
     <servlet>
         <servlet-name>spring-mvc-dispatcher</servlet-name>
@@ -31,6 +21,15 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+    <!-- Loads Spring Security config file -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/spring-database-config.xml,
+            /WEB-INF/spring-security-config.xml
+        </param-value>
+    </context-param> 
 
     <!-- Spring Security -->
     <filter>

@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -47,7 +48,7 @@
         </c:if>
 
         <form name='loginForm'
-              action='<c:url value='/auth/login_check?targetUrl=${targetUrl}' />'
+              action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />"
               method='POST'>
             <table>
                 <tr>
