@@ -36,12 +36,12 @@ public class CustomUserDetailsService extends JdbcDaoImpl {
                 new RowMapper<UserDetails>() {
                     @Override
                     public UserDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        String username = rs.getString("USERNAME");
-                        String password = rs.getString("PASSWORD");
+                        String username = rs.getString("username");
+                        String password = rs.getString("password");
                         boolean enabled = rs.getBoolean("enabled");
-                        boolean accountNonExpired = rs.getBoolean("accountNonExpired");
-                        boolean credentialsNonExpired = rs.getBoolean("credentialsNonExpired");
-                        boolean accountNonLocked = rs.getBoolean("accountNonLocked");
+                        boolean accountNonExpired = rs.getBoolean("account_non_expired");
+                        boolean credentialsNonExpired = rs.getBoolean("credentials_non_expired");
+                        boolean accountNonLocked = rs.getBoolean("account_non_locked");
 
                         return new User(username, password, enabled, accountNonExpired, credentialsNonExpired,
                                 accountNonLocked, AuthorityUtils.NO_AUTHORITIES);

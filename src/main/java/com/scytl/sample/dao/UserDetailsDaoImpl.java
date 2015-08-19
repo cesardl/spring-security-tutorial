@@ -24,13 +24,13 @@ import java.util.List;
 @Repository
 public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao {
 
-    private static final String SQL_USERS_UPDATE_LOCKED = "UPDATE USERS SET accountNonLocked = ? WHERE username = ?";
-    private static final String SQL_USERS_COUNT = "SELECT count(*) FROM USERS WHERE username = ?";
+    private static final String SQL_USERS_UPDATE_LOCKED = "UPDATE users SET account_non_locked = ? WHERE username = ?";
+    private static final String SQL_USERS_COUNT = "SELECT count(*) FROM users WHERE username = ?";
 
-    private static final String SQL_USER_ATTEMPTS_GET = "SELECT * FROM USER_ATTEMPTS WHERE username = ?";
-    private static final String SQL_USER_ATTEMPTS_INSERT = "INSERT INTO USER_ATTEMPTS (USERNAME, ATTEMPTS, LASTMODIFIED) VALUES(?,?,?)";
-    private static final String SQL_USER_ATTEMPTS_UPDATE_ATTEMPTS = "UPDATE USER_ATTEMPTS SET attempts = attempts + 1, lastmodified = ? WHERE username = ?";
-    private static final String SQL_USER_ATTEMPTS_RESET_ATTEMPTS = "UPDATE USER_ATTEMPTS SET attempts = 0, lastmodified = null WHERE username = ?";
+    private static final String SQL_USER_ATTEMPTS_GET = "SELECT * FROM user_attempts WHERE username = ?";
+    private static final String SQL_USER_ATTEMPTS_INSERT = "INSERT INTO user_attempts (username, attempts, last_modified) VALUES(?, ?, ?)";
+    private static final String SQL_USER_ATTEMPTS_UPDATE_ATTEMPTS = "UPDATE user_attempts SET attempts = attempts + 1, last_modified = ? WHERE username = ?";
+    private static final String SQL_USER_ATTEMPTS_RESET_ATTEMPTS = "UPDATE user_attempts SET attempts = 0, last_modified = null WHERE username = ?";
 
     private static final int MAX_ATTEMPTS = 3;
 
@@ -77,7 +77,7 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
                             user.setId(rs.getInt("id"));
                             user.setUsername(rs.getString("username"));
                             user.setAttempts(rs.getInt("attempts"));
-                            user.setLastModified(rs.getDate("lastModified"));
+                            user.setLastModified(rs.getDate("last_modified"));
 
                             return user;
                         }
@@ -112,12 +112,12 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
         String sql = "SELECT * FROM USER_ATTEMPTS";
 
         List<UserAttempts> userAttemptses = getJdbcTemplate().query(sql,
-                new BeanPropertyRowMapper(UserAttempts.class));
+                new BeanPropertyRowMapper<>(UserAttempts.class));
 
         if (!userAttemptses.isEmpty()) {
             System.out.println("ID\t|Username\t|Attempts\t|Last modified");
             for (UserAttempts userAttempts : userAttemptses) {
-                System.out.println(String.format("%d\t|%s\t\t|%d\t\t\t|%s",
+                System.out.println(String.format("%d\t|%s\t\t|%d\t\t|%s",
                         userAttempts.getId(), userAttempts.getUsername(),
                         userAttempts.getAttempts(), userAttempts.getLastModified()));
             }
