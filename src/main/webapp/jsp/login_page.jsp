@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -33,7 +34,7 @@
             }
         </style>
     </head>
-    <body onload='document.loginForm.j_username.focus();'>
+    <body onload='document.loginForm.username.focus();'>
         <h3>Spring Security Custom Login Form (XML)</h3>
         <h4>Custom Login Page with Username and Password</h4>
 
@@ -46,18 +47,25 @@
             <div class="msg">${msg}</div>
         </c:if>
 
-        <form name='loginForm' action='<c:url value='j_spring_security_check' />' method='POST'>
+        <form name='loginForm'
+              action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />"
+              method='POST'>
             <table>
                 <tr>
                     <td>User:</td>
-                    <td><input type='text' name='j_username' value=''>
-                    </td>
+                    <td><input type='text' name='username' value=''></td>
                 </tr>
                 <tr>
                     <td>Password:</td>
-                    <td><input type='password' name='j_password' />
-                    </td>
+                    <td><input type='password' name='password' /></td>
                 </tr>
+                <!-- if this is login for update, ignore remember me check -->
+                <c:if test="${empty loginUpdate}">
+                    <tr>
+                        <td></td>
+                        <td>Remember Me: <input type="checkbox" name="remember-me" /></td>
+                    </tr>
+                </c:if>
                 <tr>
                     <td colspan='2' align='right'>
                         <input name="submit" type="submit" value="submit" />

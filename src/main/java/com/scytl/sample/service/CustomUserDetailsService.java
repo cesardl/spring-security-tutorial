@@ -3,17 +3,12 @@ package com.scytl.sample.service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
-import org.springframework.stereotype.Service;
 
 /**
  * Reference org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl.
@@ -22,25 +17,14 @@ import org.springframework.stereotype.Service;
  *
  * @author cesardiaz
  */
-@Service("userDetailsService")
 public class CustomUserDetailsService extends JdbcDaoImpl {
 
-    @Autowired
-    private DataSource dataSource;
-
-    @PostConstruct
-    private void initialize() {
-        setDataSource(dataSource);
-    }
-
     @Override
-    @Value("select * from USERS where username=?")
     public void setUsersByUsernameQuery(String usersByUsernameQueryString) {
         super.setUsersByUsernameQuery(usersByUsernameQueryString);
     }
 
     @Override
-    @Value("select u1.USERNAME, u2.role from USERS u1, USER_AUTHORIZATION u2 where u1.user_id = u2.user_id and u1.USERNAME =?")
     public void setAuthoritiesByUsernameQuery(String queryString) {
         super.setAuthoritiesByUsernameQuery(queryString);
     }

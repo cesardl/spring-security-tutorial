@@ -3,31 +3,30 @@ package com.scytl.sample.web.handler;
 import com.scytl.sample.dao.UserDetailsDao;
 import com.scytl.sample.model.UserAttempts;
 import java.util.Date;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author cesardiaz
  */
-@Component("authenticationProvider")
 public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider {
 
-    @Autowired
+    private static final Logger log = LoggerFactory.getLogger(LimitLoginAuthenticationProvider.class);
+
     UserDetailsDao userDetailsDao;
 
-    @Autowired
-    @Qualifier("userDetailsService")
-    @Override
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        super.setUserDetailsService(userDetailsService);
+    public UserDetailsDao getUserDetailsDao() {
+        return userDetailsDao;
+    }
+
+    public void setUserDetailsDao(UserDetailsDao userDetailsDao) {
+        this.userDetailsDao = userDetailsDao;
     }
 
     @Override
@@ -39,11 +38,15 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
             //reset the user_attempts
             userDetailsDao.resetFailAttempts(authentication.getName());
 
+            log.info("Successful authenticate");
+            userDetailsDao.printAllUserAttempts(authentication.getName());
+
             return auth;
         } catch (BadCredentialsException e) {
             //invalid login, update to user_attempts
             userDetailsDao.updateFailAttempts(authentication.getName());
 
+            log.warn("Bad Credentials authenticate");
             userDetailsDao.printAllUserAttempts(authentication.getName());
 
             throw e;
@@ -61,6 +64,7 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
                 error = e.getMessage();
             }
 
+            log.warn("Locked Account authenticate");
             userDetailsDao.printAllUserAttempts(authentication.getName());
 
             throw new LockedException(error);

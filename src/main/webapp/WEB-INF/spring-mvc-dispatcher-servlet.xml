@@ -12,17 +12,15 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <!-- A way to implement method level security -->
-    <!-- Using Spring annotation
-    <context:component-scan base-package="com.scytl.sample.methodlevel" />
+    <!-- Using Spring annotation -->
+    <context:component-scan base-package="com.scytl.sample.*" />
     
+    <!-- A way to implement method level security 
     <security:global-method-security secured-annotations="enabled" />
     -->
     <!-- Using JSR 250: methodleveljsr250 -->
-    <context:component-scan base-package="com.scytl.sample.web.*, com.scytl.sample.dao, com.scytl.sample.service" />
-    
     <security:global-method-security jsr250-annotations="enabled"/>
-    
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/jsp/</value>

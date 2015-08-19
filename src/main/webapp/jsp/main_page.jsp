@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="true"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -28,7 +29,7 @@
 
             <!-- csrf for log out-->
             <form id='logoutForm' action='${logoutUrl}' method='POST'>
-                <input type="hidden" 
+                <input type="hidden"
                        name="${_csrf.parameterName}"
                        value="${_csrf.token}" />
             </form>
@@ -50,6 +51,14 @@
                 <br/>
                 <a href="javascript:formSubmit()">Logout</a>
             </c:if>
+        </sec:authorize>
+
+        <sec:authorize access="isRememberMe()">
+            <h2># This user is login by "Remember Me Cookies".</h2>
+        </sec:authorize>
+
+        <sec:authorize access="isFullyAuthenticated()">
+            <h2># This user is login by username / password.</h2>
         </sec:authorize>
     </body>
 </html>
