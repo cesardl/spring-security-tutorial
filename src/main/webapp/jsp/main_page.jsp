@@ -23,17 +23,17 @@
         <h2>Title : ${title}</h2>
         <h2>Message : ${message}</h2>
 
-        <!-- For logout user -->
-        <c:url value="/j_spring_security_logout" var="logoutUrl" />
-
-        <!-- csrf for log out-->
-        <form id='logoutForm' action='${logoutUrl}' method='POST'>
-            <input type="hidden" 
-                   name="${_csrf.parameterName}"
-                   value="${_csrf.token}" />
-        </form>
-
         <sec:authorize access="hasRole('ROLE_REGULAR_USER')">
+            <!-- For logout user -->
+            <c:url value="/j_spring_security_logout" var="logoutUrl" />
+
+            <!-- csrf for log out-->
+            <form id='logoutForm' action='${logoutUrl}' method='POST'>
+                <input type="hidden"
+                       name="${_csrf.parameterName}"
+                       value="${_csrf.token}" />
+            </form>
+
             <c:if test="${pageContext.request.userPrincipal.name != null}">
                 <h3>Welcome : ${pageContext.request.userPrincipal.name}, you have successfully logged in.</h3>
 

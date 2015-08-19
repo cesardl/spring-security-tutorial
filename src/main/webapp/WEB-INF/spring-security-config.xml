@@ -25,14 +25,12 @@
         <!-- Without expresions
         <intercept-url pattern="/main" access="ROLE_ADMIN,ROLE_REGULAR_USER" />
         -->
-        <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
-        <!--
+        <intercept-url pattern="/admin/update**" access="hasRole('ROLE_ADMIN')" />
         <intercept-url pattern="/main" access="permitAll" />
-        -->
+        
         <!-- access denied page -->
-        <!--
         <access-denied-handler error-page="/403" />
-        -->
+
         <form-login login-page="/login"
                     default-target-url="/main"
                     authentication-failure-url="/login?error"

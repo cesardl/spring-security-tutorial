@@ -1,6 +1,5 @@
 package com.scytl.sample.web.controller;
 
-import java.security.Principal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.annotation.security.RolesAllowed;
@@ -26,44 +25,18 @@ import org.springframework.web.servlet.ModelAndView;
  * @author cesardiaz
  */
 @Controller
-public class LoginController {
+public class MainController {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
-    @RequestMapping(value = "/main**", method = RequestMethod.GET)
-    public String main(ModelMap model, Principal principal) {
-        String name = principal.getName();
-
-        log.info("main: name {}", name);
-
-        model.addAttribute("title", "Spring Security Hello World");
-        model.addAttribute("message", "This is welcome page!");
-
-        return "main_page";
-    }
-
-    /**
-     * This update page is for user login with password only. If user is login
-     * via remember me cookie, send login to ask for password again. To avoid
-     * stolen remember me cookie to update info.
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/main/update**", method = RequestMethod.GET)
-    public ModelAndView updatePage(HttpServletRequest request) {
+    @RequestMapping(value = {"/", "/main**"}, method = RequestMethod.GET)
+    public ModelAndView main() {
         ModelAndView model = new ModelAndView();
+        model.addObject("title", "Spring Security Hello World");
+        model.addObject("message", "This is main page!");
+        model.setViewName("main_page");
 
-        if (isRememberMeAuthenticated()) {
-            //send login for update
-            setRememberMeTargetUrlToSession(request);
-            model.addObject("loginUpdate", true);
-            model.setViewName("/login");
-        } else {
-            model.setViewName("update");
-        }
-
-        log.info("updatePage: {}", model);
+        log.info("main: {}", model);
 
         return model;
     }
@@ -74,6 +47,32 @@ public class LoginController {
         log.info("admin: ModelMap {}", model.keySet());
 
         return "admin_page";
+    }
+
+    /**
+     * This update page is for user login with password only. If user is login
+     * via remember me cookie, send login to ask for password again. To avoid
+     * stolen remember me cookie to update info.
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/admin/update**", method = RequestMethod.GET)
+    public ModelAndView updatePage(HttpServletRequest request) {
+        ModelAndView model = new ModelAndView();
+
+        if (isRememberMeAuthenticated()) {
+            //send login for update
+            setRememberMeTargetUrlToSession(request);
+            model.addObject("loginUpdate", true);
+            model.setViewName("login_page");
+        } else {
+            model.setViewName("update");
+        }
+
+        log.info("updatePage: {}", model);
+
+        return model;
     }
 
     /**
@@ -96,7 +95,7 @@ public class LoginController {
     private void setRememberMeTargetUrlToSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.setAttribute("targetUrl", "/main/update");
+            session.setAttribute("targetUrl", "/admin/update");
         }
     }
 
@@ -107,7 +106,7 @@ public class LoginController {
         return "common_page";
     }
 
-    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(
             @RequestParam(value = "error", required = false) String error,
             HttpServletRequest request) {
@@ -187,7 +186,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
-            log.info("{}", userDetail);
+            log.info("403.user detail: {}", userDetail);
 
             model.addObject("username", userDetail.getUsername());
         }

@@ -20,7 +20,7 @@
     -->
     <!-- Using JSR 250: methodleveljsr250 -->
     <security:global-method-security jsr250-annotations="enabled"/>
-    
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/jsp/</value>
