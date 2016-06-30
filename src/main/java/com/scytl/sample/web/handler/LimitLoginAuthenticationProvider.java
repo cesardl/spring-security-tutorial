@@ -2,7 +2,6 @@ package com.scytl.sample.web.handler;
 
 import com.scytl.sample.dao.UserDetailsDao;
 import com.scytl.sample.model.UserAttempts;
-import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,8 +10,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
+import java.util.Date;
+
 /**
- *
  * @author cesardiaz
  */
 public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider {
