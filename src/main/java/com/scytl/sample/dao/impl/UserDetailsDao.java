@@ -1,5 +1,6 @@
-package com.scytl.sample.dao;
+package com.scytl.sample.dao.impl;
 
+import com.scytl.sample.dao.IUserDetailsDao;
 import com.scytl.sample.model.UserAttempts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,7 +23,7 @@ import java.util.List;
  * @author cesardiaz
  */
 @Repository
-public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao {
+public class UserDetailsDao extends JdbcDaoSupport implements IUserDetailsDao {
 
     private static final String SQL_USERS_UPDATE_LOCKED = "UPDATE users SET account_non_locked = ? WHERE username = ?";
     private static final String SQL_USERS_COUNT = "SELECT count(*) FROM users WHERE username = ?";
@@ -48,18 +49,18 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
         if (user == null) {
             if (isUserExists(username)) {
                 // if no record, insert a new
-                getJdbcTemplate().update(SQL_USER_ATTEMPTS_INSERT, new Object[]{username, 1, new Date()});
+                getJdbcTemplate().update(SQL_USER_ATTEMPTS_INSERT, username, 1, new Date());
             }
         } else {
 
             if (isUserExists(username)) {
                 // update attempts count, +1
-                getJdbcTemplate().update(SQL_USER_ATTEMPTS_UPDATE_ATTEMPTS, new Object[]{new Date(), username});
+                getJdbcTemplate().update(SQL_USER_ATTEMPTS_UPDATE_ATTEMPTS, new Date(), username);
             }
 
             if (user.getAttempts() + 1 >= MAX_ATTEMPTS) {
                 // locked user
-                getJdbcTemplate().update(SQL_USERS_UPDATE_LOCKED, new Object[]{false, username});
+                getJdbcTemplate().update(SQL_USERS_UPDATE_LOCKED, false, username);
                 // throw exception
                 throw new LockedException("User Account is locked!");
             }
@@ -69,7 +70,7 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
     @Override
     public UserAttempts getUserAttempts(String username) {
         try {
-            UserAttempts userAttempts = getJdbcTemplate().queryForObject(SQL_USER_ATTEMPTS_GET,
+            return getJdbcTemplate().queryForObject(SQL_USER_ATTEMPTS_GET,
                     new Object[]{username}, new RowMapper<UserAttempts>() {
                         @Override
                         public UserAttempts mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -82,7 +83,6 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
                             return user;
                         }
                     });
-            return userAttempts;
 
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -90,9 +90,9 @@ public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao
     }
 
     @Override
-    public void resetFailAttempts(String username) {
+    public void resetFailAttempts(final String username) {
         getJdbcTemplate().update(
-                SQL_USER_ATTEMPTS_RESET_ATTEMPTS, new Object[]{username});
+                SQL_USER_ATTEMPTS_RESET_ATTEMPTS, username);
     }
 
     private boolean isUserExists(String username) {
