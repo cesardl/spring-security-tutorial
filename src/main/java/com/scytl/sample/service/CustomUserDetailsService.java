@@ -1,8 +1,5 @@
 package com.scytl.sample.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -10,9 +7,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  * Reference org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl.
- *
+ * <p/>
  * Created by cesardiaz on 07/08/15.
  *
  * @author cesardiaz
@@ -53,7 +54,7 @@ public class CustomUserDetailsService extends JdbcDaoImpl {
     //override to pass accountNonLocked
     @Override
     public UserDetails createUserDetails(String username, UserDetails userFromUserQuery,
-            List<GrantedAuthority> combinedAuthorities) {
+                                         List<GrantedAuthority> combinedAuthorities) {
         String returnUsername = userFromUserQuery.getUsername();
 
         if (super.isUsernameBasedPrimaryKey()) {

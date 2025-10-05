@@ -1,8 +1,7 @@
 package com.scytl.sample.web.handler;
 
-import com.scytl.sample.dao.UserDetailsDao;
+import com.scytl.sample.dao.IUserDetailsDao;
 import com.scytl.sample.model.UserAttempts;
-import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,21 +10,22 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
+import java.util.Date;
+
 /**
- *
  * @author cesardiaz
  */
 public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider {
 
     private static final Logger log = LoggerFactory.getLogger(LimitLoginAuthenticationProvider.class);
 
-    UserDetailsDao userDetailsDao;
+    IUserDetailsDao userDetailsDao;
 
-    public UserDetailsDao getUserDetailsDao() {
+    public IUserDetailsDao getUserDetailsDao() {
         return userDetailsDao;
     }
 
-    public void setUserDetailsDao(UserDetailsDao userDetailsDao) {
+    public void setUserDetailsDao(IUserDetailsDao userDetailsDao) {
         this.userDetailsDao = userDetailsDao;
     }
 

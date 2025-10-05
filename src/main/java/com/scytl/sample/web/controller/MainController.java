@@ -2,9 +2,6 @@ package com.scytl.sample.web.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -20,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
- *
  * @author cesardiaz
  */
 @Controller
@@ -80,8 +80,7 @@ public class MainController {
      * org.springframework.security.authentication.AuthenticationTrustResolverImpl
      */
     private boolean isRememberMeAuthenticated() {
-        Authentication authentication
-                = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return false;
         }
@@ -115,8 +114,7 @@ public class MainController {
         if (error != null) {
             log.info("login.error {}", error);
             // model.addObject("error", "Invalid username and password!");
-            model.addObject("error",
-                    getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+            model.addObject("error", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 
             //login form for update page
             //if login error, get the targetUrl from session again.
@@ -144,7 +142,7 @@ public class MainController {
         if (session != null) {
             targetUrl = session.getAttribute("targetUrl") == null ? ""
                     : session.getAttribute("targetUrl").toString();
-            log.info("Targer url: {}", targetUrl);
+            log.info("Target url: {}", targetUrl);
         } else {
             log.info("Session null");
         }
@@ -179,7 +177,7 @@ public class MainController {
 
     // for 403 access denied page
     @RequestMapping(value = "/403", method = RequestMethod.GET)
-    public ModelAndView accesssDenied() {
+    public ModelAndView accessDenied() {
         ModelAndView model = new ModelAndView();
 
         //check if user is login

@@ -7,7 +7,7 @@ import com.scytl.sample.model.UserAttempts;
  *
  * @author cesardiaz
  */
-public interface UserDetailsDao {
+public interface IUserDetailsDao {
 
     void updateFailAttempts(String username);
 
