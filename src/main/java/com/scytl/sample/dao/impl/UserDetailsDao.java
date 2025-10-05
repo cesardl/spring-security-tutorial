@@ -1,6 +1,6 @@
 package com.scytl.sample.dao.impl;
 
-import com.scytl.sample.dao.UserDetailsDao;
+import com.scytl.sample.dao.IUserDetailsDao;
 import com.scytl.sample.model.UserAttempts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author cesardiaz
  */
 @Repository
-public class UserDetailsDaoImpl extends JdbcDaoSupport implements UserDetailsDao {
+public class UserDetailsDao extends JdbcDaoSupport implements IUserDetailsDao {
 
     private static final String SQL_USERS_UPDATE_LOCKED = "UPDATE users SET account_non_locked = ? WHERE username = ?";
     private static final String SQL_USERS_COUNT = "SELECT count(*) FROM users WHERE username = ?";

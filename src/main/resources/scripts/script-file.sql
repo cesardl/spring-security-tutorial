@@ -39,9 +39,9 @@ CREATE TABLE user_attempts (
   PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS persistent_login;
+DROP TABLE IF EXISTS persistent_logins;
 
-CREATE TABLE persistent_login (
+CREATE TABLE persistent_logins (
   username  VARCHAR(64) NOT NULL,
   series    VARCHAR(64) NOT NULL,
   token     VARCHAR(64) NOT NULL,

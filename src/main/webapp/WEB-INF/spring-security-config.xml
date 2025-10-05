@@ -81,14 +81,14 @@
         <beans:property name="dataSource" ref="dataSource"/>
     </beans:bean>
 
-    <beans:bean id="userDetailsDao" class="com.scytl.sample.dao.impl.UserDetailsDaoImpl">
+    <beans:bean id="userDetailsDao" class="com.scytl.sample.dao.impl.UserDetailsDao">
         <beans:property name="dataSource" ref="dataSource"/>
     </beans:bean>
 
     <beans:bean id="authenticationProvider"
                 class="com.scytl.sample.web.handler.LimitLoginAuthenticationProvider">
         <beans:property name="userDetailsService" ref="customUserDetailsService"/>
-        <beans:property name="userDetailsDao" ref="userDetailsDao"/>
+        <beans:property name="IUserDetailsDao" ref="userDetailsDao"/>
     </beans:bean>
 
     <authentication-manager>

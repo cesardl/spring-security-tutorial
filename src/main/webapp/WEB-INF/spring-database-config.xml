@@ -8,12 +8,18 @@
         http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:database.properties</value>
+        </property>
+    </bean>
+
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/almacen"/>
-        <property name="username" value="root"/>
-        <property name="password" value="rootroot"/>
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
     </bean>
 
     <!-- If request parameter "targetUrl" is existed, then forward to this url -->
@@ -30,7 +36,7 @@
     </bean>
     -->
     <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="classpath:script-file.sql"/>
+        <jdbc:script location="classpath:scripts/script-file.sql"/>
     </jdbc:initialize-database>
 
 </beans>
